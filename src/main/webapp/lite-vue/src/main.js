@@ -27,7 +27,7 @@ router.map({
   "/h5/index": {
     component: index
   },
-  "/h5/work/:id": {
+  "/h5/work/:id/:teacher": {
     component: work
   },
 });

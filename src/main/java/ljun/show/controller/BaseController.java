@@ -3,11 +3,11 @@ package ljun.show.controller;
 import com.jfinal.core.Controller;
 
 /**
- * Created by kangbin on 16/4/21.
+ * Created by LJun on 16/6/7.
  */
 public abstract class BaseController extends Controller {
     public enum RestError {
-        GroupNotExist(1001, "小组不存在");
+        GroupNotExist(1001, "LJun不在呀~");
 
         private Integer code;
         private String msg;

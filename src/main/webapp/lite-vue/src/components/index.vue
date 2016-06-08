@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="task in tasks | filterBy search in 'teacher' 'work' | orderBy id -1 | limitBy 20'"
-                    v-link="{ path: '/h5/work/' + task.id }">
+                    v-link="{ path: '/h5/work/' + task.id + '/' + task.teacher }">
                   <td class="mdl-data-table__cell--non-numeric">{{ task.teacher }}</td>
                   <td>{{ task.name }}</td>
                   <td>{{ task.score }}</td>
@@ -104,8 +104,8 @@
       ljunFooter
     },
     ready: function () {
-      componentHandler.upgradeAllRegistered();
       this.poList();
+      componentHandler.upgradeAllRegistered();
     }
   }
 </script>

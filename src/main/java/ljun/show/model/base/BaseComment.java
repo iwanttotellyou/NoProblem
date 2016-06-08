@@ -17,14 +17,6 @@ public abstract class BaseComment<M extends BaseComment<M>> extends Model<M> imp
 		return get("id");
 	}
 
-	public void setContent(java.lang.String content) {
-		set("content", content);
-	}
-
-	public java.lang.String getContent() {
-		return get("content");
-	}
-
 	public void setPoId(java.lang.Integer poId) {
 		set("po_id", poId);
 	}
@@ -49,12 +41,20 @@ public abstract class BaseComment<M extends BaseComment<M>> extends Model<M> imp
 		return get("score");
 	}
 
-	public void setComment(java.lang.String comment) {
-		set("comment", comment);
+	public void setTeacherSay(java.lang.String teacherSay) {
+		set("teacher_say", teacherSay);
 	}
 
-	public java.lang.String getComment() {
-		return get("comment");
+	public java.lang.String getTeacherSay() {
+		return get("teacher_say");
+	}
+
+	public void setStudentSay(java.lang.String studentSay) {
+		set("student_say", studentSay);
+	}
+
+	public java.lang.String getStudentSay() {
+		return get("student_say");
 	}
 
 	public void setCreatedTime(java.util.Date createdTime) {

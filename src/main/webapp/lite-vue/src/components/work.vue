@@ -36,15 +36,60 @@
                 <p class="mdl-color-text--grey-900 section">
                   {{ data.content }}
                 </p>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+
+                <!--老师score-->
+                <div v-if="role == 0" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                     :class="{ 'mdl-badge': data.score != oldScore }" data-badge="♥">
+                  <input class="mdl-textfield__input" type="text" id="score" value="init" v-model="data.score">
+                  <label class="mdl-textfield__label" for="score">score</label>
+                </div>
+                <!--学生score-->
+                <div v-if="role == 1">
+                  <p class="mdl-color-text--grey-900 section pink">
+                    {{ data.score }}
+                  </p>
+                </div>
+
+
+                <!--老师-->
+                <div v-if="role == 1">
+                  <h5>{{ $route.params.teacher }}</h5>
+                  <p class="mdl-color-text--grey-900 section">
+                    {{ data.teacher_say }}
+                  </p>
+                </div>
+                <!--学生-->
+                <div v-if="role == 0">
+                  <h5>student</h5>
+                  <p class="mdl-color-text--grey-900 section">
+                    {{ data.student_say }}
+                  </p>
+                </div>
+                <!--老师回复-->
+                <div v-if="role == 0" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                     :class="{ 'mdl-badge': data.teacher_say != oldResponse }" data-badge="♥">
+                    <textarea class="mdl-textfield__input" type="text" rows="6"
+                              id="response" v-model="data.teacher_say">init</textarea>
+                  <label class="mdl-textfield__label" for="response">Response</label>
+                </div>
+                <!--学生回复-->
+                <div v-if="role == 1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
                      :class="{ 'mdl-badge': data.student_say != oldComment }" data-badge="♥">
                     <textarea class="mdl-textfield__input" type="text" rows="6"
                               id="comment" v-model="data.student_say">init</textarea>
                   <label class="mdl-textfield__label" for="comment">Comment</label>
                 </div>
-                <button class="mdl-button mdl-js-button mdl-button--accent" @click="saveComment">
+
+                <!--老师保存-->
+                <button v-if="role == 0" class="mdl-button mdl-js-button mdl-button--accent" @click="saveResponse">
                   Save
                 </button>
+
+                <!--学生保存-->
+                <button v-if="role == 1" class="mdl-button mdl-js-button mdl-button--accent" @click="saveComment">
+                  Save
+                </button>
+
               </div>
               <div class="mdl-layout-spacer"></div>
             </div>
@@ -92,8 +137,11 @@
   export default{
     data() {
       return {
+        role: 0,
         data: {},
-        oldComment: ""
+        oldResponse: null,
+        oldComment: null,
+        oldScore: null
       }
     },
     methods: {
@@ -109,12 +157,52 @@
           emulateJSON: true
         }).then(function (response) {
           this.data = response.data[0];
+          this.data.score = this.data.score ? this.data.score : "";
+          this.oldScore = this.data.score;
+          this.data.teacher_say = this.data.teacher_say ? this.data.teacher_say : "";
+          this.oldResponse = this.data.teacher_say;
+          this.data.student_say = this.data.student_say ? this.data.student_say : "";
           this.oldComment = this.data.student_say;
+          console.log(this.data);
         });
       },
-      saveComment: function (event) {
-        this.oldComment = this.data.student_say;
-        this.$els.toastSave.MaterialSnackbar.showSnackbar(toastData);
+      saveResponse: function () {
+        var data = {
+          'po_id': this.$route.params.id,
+          'user_id': 1,
+          'score': this.data.score,
+          'teacher_say': this.data.teacher_say,
+          'update_time': Date()
+        }
+        this.$http({
+          url: '/comment/teacher',
+          method: 'POST',
+          data: data,
+          emulateJSON: true
+        }).then(function (response) {
+          console.log(response);
+          this.oldScore = this.data.score;
+          this.oldResponse = this.data.teacher_say;
+          this.$els.toastSave.MaterialSnackbar.showSnackbar(toastData);
+        });
+        return;
+      },
+      saveComment: function () {
+        var data = {
+          'po_id': this.$route.params.id,
+          'user_id': 1,
+          'student_say': this.data.student_say,
+          'update_time': Date()
+        }
+        this.$http({
+          url: '/comment/student',
+          method: 'POST',
+          data: data,
+          emulateJSON: true
+        }).then(function () {
+          this.oldComment = this.data.student_say;
+          this.$els.toastSave.MaterialSnackbar.showSnackbar(toastData);
+        });
         return;
       }
     },

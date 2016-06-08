@@ -24,7 +24,7 @@ public class ApiController extends Controller {
                     "     po.id         AS id,\n" +
                     "     po.name       AS name\n" +
                     "   FROM user, po\n" +
-                    "   WHERE user.id = po.user_id) AS polist\n" +
+                    "   WHERE user.id = po.user_id AND po.deleted_time is null) AS polist\n" +
                     "  LEFT JOIN comment\n" +
                     "    ON polist.id = comment.po_id;");
             renderJson(pos);
@@ -46,7 +46,13 @@ public class ApiController extends Controller {
                     "FROM po\n" +
                     "  LEFT JOIN comment\n" +
                     "    ON po.id = comment.po_id\n" +
-                    "WHERE comment.po_id = ? AND comment.user_id = ?;\n", poId, userId);
+                    "WHERE\n" +
+                    "  CASE comment.po_id IS NULL\n" +
+                    "  WHEN TRUE\n" +
+                    "    THEN COMMENT.deleted_time IS NULL\n" +
+                    "  ELSE\n" +
+                    "    COMMENT.deleted_time IS NULL AND COMMENT.po_id = ? AND COMMENT.user_id = ?\n" +
+                    "  END;", poId, userId);
             renderJson(comments);
             return;
         }

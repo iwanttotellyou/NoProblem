@@ -41,6 +41,14 @@ public abstract class BasePo<M extends BasePo<M>> extends Model<M> implements IB
 		return get("title");
 	}
 
+	public void setSubtitle(java.lang.String subtitle) {
+		set("subtitle", subtitle);
+	}
+
+	public java.lang.String getSubtitle() {
+		return get("subtitle");
+	}
+
 	public void setContent(java.lang.String content) {
 		set("content", content);
 	}

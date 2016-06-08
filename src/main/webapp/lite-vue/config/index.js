@@ -20,6 +20,12 @@ module.exports = {
         prependPath: true,
         changeOrigin: true
       },
+      "/comment/*": {
+        target: "http://127.0.0.1:9000",
+        toProxy: true,
+        prependPath: true,
+        changeOrigin: true
+      },
     }
   }
 }
