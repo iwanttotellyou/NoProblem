@@ -1,10 +1,7 @@
 package ljun.show.route;
 
 import com.jfinal.config.Routes;
-import ljun.show.controller.ApiController;
-import ljun.show.controller.AuthController;
-import ljun.show.controller.CommentController;
-import ljun.show.controller.IndexController;
+import ljun.show.controller.*;
 
 /**
  * Created by LJun on 16/5/3.
@@ -15,5 +12,6 @@ public class AdminRoutes extends Routes {
         add("/api", ApiController.class);
         add("/auth", AuthController.class);
         add("/comment", CommentController.class);
+        add("/user", UserController.class);
     }
 }

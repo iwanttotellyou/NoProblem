@@ -3,3 +3,5 @@
 target
 NoProblem.iml
 .DS_Store
+app.properties
+product-app.properties

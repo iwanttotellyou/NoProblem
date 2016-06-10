@@ -18,6 +18,7 @@
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
           <a v-link="{ path: '/login' }" class="mdl-layout__tab">LOGIN</a>
           <a v-link="{ path: '/h5/index' }" class="mdl-layout__tab">HOME</a>
+          <a v-if="role == 0" v-link="{ path: '/h5/own' }" class="mdl-layout__tab">OWN</a>
           <a class="mdl-layout__tab is-active">WORK</a>
         </div>
       </header>
@@ -53,14 +54,14 @@
 
                 <!--老师-->
                 <div v-if="role == 1">
-                  <h5>{{ $route.params.teacher }}</h5>
+                  <h5>{{ $route.params.nickname }}</h5>
                   <p class="mdl-color-text--grey-900 section">
                     {{ data.teacher_say }}
                   </p>
                 </div>
                 <!--学生-->
                 <div v-if="role == 0">
-                  <h5>student</h5>
+                  <h5>{{ $route.params.nickname }}</h5>
                   <p class="mdl-color-text--grey-900 section">
                     {{ data.student_say }}
                   </p>
@@ -137,7 +138,7 @@
   export default{
     data() {
       return {
-        role: 0,
+        role: this.$cookie.get("role"),
         data: {},
         oldResponse: null,
         oldComment: null,
@@ -148,7 +149,6 @@
       getContent: function () {
         var data = {
           poId: this.$route.params.id,
-          userId: 1
         }
         this.$http({
           url: '/api/po-content',
@@ -190,7 +190,6 @@
       saveComment: function () {
         var data = {
           'po_id': this.$route.params.id,
-          'user_id': 1,
           'student_say': this.data.student_say,
           'update_time': Date()
         }

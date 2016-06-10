@@ -8,9 +8,12 @@ import "./css/resetChrome.css"
 import login from "components/login.vue"
 import index from "components/index.vue"
 import work from "components/work.vue"
+import  own from "components/own.vue"
+import Cookie from "./plugins/cookie"
 
 Vue.use(Resource);
 Vue.use(VueRouter);
+Vue.use(Cookie);
 
 var App = Vue.extend({});
 
@@ -27,7 +30,10 @@ router.map({
   "/h5/index": {
     component: index
   },
-  "/h5/work/:id/:teacher": {
+  "/h5/own": {
+    component: own
+  },
+  "/h5/work/:id/:nickname": {
     component: work
   },
 });
@@ -37,7 +43,7 @@ router.beforeEach(function () {
 });
 
 router.redirect({
-  '*': '/h5/index'
+  '*': '/login'
 });
 
 router.start(App, "body");

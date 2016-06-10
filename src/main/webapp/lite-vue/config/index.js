@@ -26,6 +26,12 @@ module.exports = {
         prependPath: true,
         changeOrigin: true
       },
+      "/user/login": {
+        target: "http://127.0.0.1:9000",
+        toProxy: true,
+        prependPath: true,
+        changeOrigin: true
+      }
     }
   }
 }

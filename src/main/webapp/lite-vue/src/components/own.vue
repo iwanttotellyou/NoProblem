@@ -24,8 +24,8 @@
 
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
           <a v-link="{ path: '/login' }" class="mdl-layout__tab">LOGIN</a>
-          <a v-link="{ path: '/h5/index' }" class="mdl-layout__tab is-active">HOME</a>
-          <a v-if="role == 0" v-link="{ path: '/h5/own' }" class="mdl-layout__tab">OWN</a>
+          <a v-link="{ path: '/h5/index' }" class="mdl-layout__tab">HOME</a>
+          <a v-link="{ path: '/h5/own' }" class="mdl-layout__tab is-active">OWN</a>
         </div>
       </header>
       <main class="mdl-layout__content">
@@ -33,41 +33,23 @@
           <div class="page-content">
             <div class="mdl-grid">
               <div class="mdl-layout-spacer"></div>
-              <!--老师-->
-              <table v-if="role == 0" class="mdl-cell mdl-cell--8-col mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <table class="mdl-cell mdl-cell--8-col mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                 <thead>
                 <tr>
-                  <th class="mdl-data-table__cell--non-numeric">Teacher</th>
-                  <th>Work</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="task in tasks | filterBy search in 'name' 'nickname' | orderBy id -1 | limitBy 20'">
-                  <td class="mdl-data-table__cell--non-numeric">{{ task.nickname }}</td>
-                  <td>{{ task.name }}</td>
-                </tr>
-                </tbody>
-              </table>
-
-              <!--学生-->
-              <table v-if="role == 1" class="mdl-cell mdl-cell--8-col mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                <thead>
-                <tr>
-                  <th class="mdl-data-table__cell--non-numeric">Teacher</th>
+                  <th class="mdl-data-table__cell--non-numeric">Student</th>
                   <th>Work</th>
                   <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="task in tasks | filterBy search in 'teacher' 'work' | orderBy id -1 | limitBy 20'"
-                    v-link="{ path: '/h5/work/' + task.id + '/' + task.teacher }">
-                  <td class="mdl-data-table__cell--non-numeric">{{ task.teacher }}</td>
+                <tr v-for="task in tasks | filterBy search in 'nickname' 'name' 'score' | orderBy id -1 | limitBy 20'"
+                    v-link="{ path: '/h5/work/' + task.id + '/' + task.nickname }">
+                  <td class="mdl-data-table__cell--non-numeric">{{ task.nickname }}</td>
                   <td>{{ task.name }}</td>
                   <td>{{ task.score }}</td>
                 </tr>
                 </tbody>
               </table>
-
               <div class="mdl-layout-spacer"></div>
             </div>
           </div>
@@ -109,18 +91,9 @@
       }
     },
     methods: {
-      poList: function () {
+      ownList: function () {
         this.$http({
-          url: '/api/po-list',
-          method: 'POST',
-          emulateJSON: true
-        }).then(function (response) {
-          this.tasks = response.data;
-        });
-      },
-      teacherPoList: function () {
-        this.$http({
-          url: '/api/teacher-po-list',
+          url: '/api/own-list',
           method: 'POST',
           emulateJSON: true
         }).then(function (response) {
@@ -133,12 +106,7 @@
       ljunFooter
     },
     ready: function () {
-      if (this.role == 0) {
-        this.teacherPoList();
-      }
-      if (this.role == 1) {
-        this.poList();
-      }
+      this.ownList();
       componentHandler.upgradeAllRegistered();
     }
   }

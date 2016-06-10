@@ -25,6 +25,22 @@ public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implement
 		return get("role_id");
 	}
 
+	public void setAccount(java.lang.String account) {
+		set("account", account);
+	}
+
+	public java.lang.String getAccount() {
+		return get("account");
+	}
+
+	public void setPassword(java.lang.String password) {
+		set("password", password);
+	}
+
+	public java.lang.String getPassword() {
+		return get("password");
+	}
+
 	public void setNickname(java.lang.String nickname) {
 		set("nickname", nickname);
 	}

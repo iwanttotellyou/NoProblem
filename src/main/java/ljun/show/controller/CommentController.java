@@ -26,7 +26,7 @@ public class CommentController extends BaseController {
 
         List<Comment> comments = Comment.dao.find("SELECT id\n" +
                 "FROM comment\n" +
-                "WHERE po_id = ? AND user_id = ? AND deleted_time IS NULL;", comment.getPoId(), comment.getUserId());
+                "WHERE po_id = ? AND user_id = ? AND deleted_time IS NULL;", comment.getPoId(), getSessionAttr("userId"));
         if (comments.size() < 1) {
             comment.save();
             renderJson(new BaseController.RestResult(0, "", comment.getId()));
@@ -60,7 +60,7 @@ public class CommentController extends BaseController {
 
         List<Comment> comments = Comment.dao.find("SELECT id\n" +
                 "FROM comment\n" +
-                "WHERE po_id = ? AND user_id = ? AND deleted_time IS NULL;", comment.getPoId(), comment.getUserId());
+                "WHERE po_id = ? AND user_id = ? AND deleted_time IS NULL;", comment.getPoId(), getSessionAttr("userId"));
         if (comments.size() < 1) {
             comment.save();
             renderJson(new BaseController.RestResult(0, "", comment.getId()));
