@@ -1,13 +1,13 @@
 FROM daocloud.io/mouge/tomcat-maven-node
 
-COPY . /JSchoolsDebug
+COPY . /NoProblem
 
-WORKDIR /JSchoolsDebug/src/main/webapp/vue-ljun
+WORKDIR /NoProblem/src/main/webapp/lite-vue
 RUN npm install
 RUN npm run build
 
-WORKDIR /JSchoolsDebug
+WORKDIR /NoProblem
 
-RUN mv /JSchoolsDebug/src/main/resources/product-app.properties  /JSchoolsDebug/src/main/resources/app.properties
+RUN mv /NoProblem/src/main/resources/product-app.properties  /NoProblem/src/main/resources/app.properties
 RUN mvn install
-RUN rm -rf $CATALINA_HOME/webapps/ROOT && rm -rf /JSchoolsDebug/src/main/webapp/vue-ljun && mv target/JSchoolsDebug $CATALINA_HOME/webapps/ROOT
+RUN rm -rf $CATALINA_HOME/webapps/ROOT && rm -rf /NoProblem/src/main/webapp/vue-ljun && mv target/NoProblem $CATALINA_HOME/webapps/ROOT
